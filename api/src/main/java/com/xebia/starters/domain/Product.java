@@ -13,7 +13,7 @@ public class Product {
     String name;
     String category;
     String description;
-    Integer price;
+    Double price;
 
     public Product() {
         this(null, null, null, null, null);
