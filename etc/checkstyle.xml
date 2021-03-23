@@ -5,7 +5,7 @@
 
 <module name="Checker">
     <module name="SuppressionFilter">
-        <property name="file" value="etc/suppressions.xml"/>
+        <property name="file" value="${checkstyle.config.path}/suppressions.xml"/>
     </module>
     <module name="SuppressWarningsFilter"/>
 <!--    <module name="NewlineAtEndOfFile"/>-->
