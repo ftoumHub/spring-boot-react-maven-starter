@@ -1,14 +1,14 @@
 spring-boot-react-maven-starter
 -----
 
-![Build](https://github.com/xebia-os/spring-boot-react-maven-starter/workflows/spring-boot-react-maven-starter%20CI/badge.svg)
+This is a multi-module Spring Boot React Apache Maven starter app with good defaults.<br>
+The react app is built using [create-react-app](https://github.com/facebookincubator/create-react-app).
 
-This is a multi-module Spring Boot React Apache Maven starter app with good defaults. The react app is built using [create-react-app](https://github.com/facebookincubator/create-react-app).
-
-This project provides a productive setup for building Spring Boot React applications. The application is divided into two Maven modules:
+This project provides a productive setup for building Spring Boot React applications.<br>
+The application is divided into two Maven modules:
 
 1. `api`: This contains Java code of the application.
-2. `ui`: This contains all react JavaScript code of the application.
+2. `ui` : This contains all react JavaScript code of the application.
 
 ## Running the full application
 
@@ -16,7 +16,7 @@ You can build the package as a single artifact by running the `./mvnw clean inst
 Next, you can run the application by executing:
 
 ```bash
-$ java -jar api/target/api-0.1.0-SNAPSHOT.jar
+$ java -jar api/target/spring-boot-react-starter-api.jar
 ```
 
 The application will be accessible at `http://localhost:3500`.

@@ -5,7 +5,11 @@ import com.xebia.starters.repository.FakeProductsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -31,7 +35,7 @@ public class ProductResource {
     public ResponseEntity getAllProducts(@RequestParam(name = "category_like", required = false) String category,
                                          @RequestParam(name = "_page", required = false) Integer page,
                                          @RequestParam(name = "_limit", required = false) Integer limit,
-                                         @RequestParam(name = "_sort", required = false) String sort ) {
+                                         @RequestParam(name = "_sort", required = false) String sort) {
         logger.info("==> getAllProducts");
         logger.info("filters :");
         logger.info("category_like : " + category);
