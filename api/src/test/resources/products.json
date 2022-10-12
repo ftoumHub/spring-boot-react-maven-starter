@@ -61,5 +61,26 @@
     "category": "Chess",
     "description": "Gold-plated, diamond-studded King",
     "price": 1200
+  },
+  {
+    "id": 10,
+    "name": "ZZ Bling King",
+    "category": "Chess",
+    "description": "Gold-plated, diamond-studded King",
+    "price": 1200
+  },
+  {
+    "id": 11,
+    "name": "CC Bling King",
+    "category": "Chess",
+    "description": "Gold-plated, diamond-studded King",
+    "price": 1200
+  },
+  {
+    "id": 12,
+    "name": "EE Bling King",
+    "category": "Chess",
+    "description": "Gold-plated, diamond-studded King",
+    "price": 1200
   }
 ]

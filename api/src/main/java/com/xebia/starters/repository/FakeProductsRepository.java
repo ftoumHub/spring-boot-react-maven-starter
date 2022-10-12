@@ -9,39 +9,40 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.IntStream.range;
 
 @Repository
 public class FakeProductsRepository {
 
-    private Faker faker;
-    private Commerce commerceFaker;
+    private final Faker faker;
+    private final Commerce commerceFaker;
+    private final Random random;
 
-    private HashMap<String, Product> products ;
+    private final HashMap<String, Product> products;
 
     public FakeProductsRepository() {
         this.faker = new Faker();
         this.commerceFaker = faker.commerce();
+        this.random = new Random();
         this.products = new HashMap<>();
         initProducts();
     }
 
     private void initProducts() {
         String[] categories = new String[]{"Watersports", "Soccer", "Chess", "Running"};
-        Random r = new Random();
 
-        IntStream.range(1, 503)
+        range(1, 504)
                 .forEach(i -> {
-                    String category = categories[r.nextInt(categories.length)];
+                    String category = categories[random.nextInt(categories.length)];
                     products.put(String.valueOf(i),
                             Product.builder()
                                     .id(String.valueOf(i))
                                     .name(commerceFaker.productName())
                                     .category(category)
                                     .description(category + ": " + faker.lorem().sentence(3))
-                                    .price(Double.parseDouble(commerceFaker.price().replace(',','.')))
+                                    .price(Double.parseDouble(commerceFaker.price().replace(',', '.')))
                                     .build());
                 });
     }
@@ -51,7 +52,7 @@ public class FakeProductsRepository {
     }
 
     public List<Product> findAllProducts() {
-        return new ArrayList<>(products.values());
+        return new ArrayList<>(this.products.values());
     }
 
     public List<String> findAllCategories() {

@@ -12,7 +12,7 @@ The application is divided into two Maven modules:
 
 ## Running the full application
 
-You can build the package as a single artifact by running the `./mvnw clean install`.
+You can build the package as a single artifact by running the `mvn clean install`.
 Next, you can run the application by executing:
 
 ```bash
@@ -20,6 +20,8 @@ $ java -jar api/target/spring-boot-react-starter-api.jar
 ```
 
 The application will be accessible at `http://localhost:3500`.
+
+The products api will be accessible at `http://localhost:3500/api/products`.
 
 ## Features
 
@@ -39,7 +41,7 @@ You can also run the application using Maven.
 
 ```bash
 $ cd api
-$  ../mvnw spring-boot:run
+$ mvn spring-boot:run
 ```
 
 ## Running the frontend for development mode
