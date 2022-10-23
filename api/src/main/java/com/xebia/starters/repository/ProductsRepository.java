@@ -1,11 +1,8 @@
 package com.xebia.starters.repository;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xebia.starters.domain.Product;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Repository;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

@@ -2,23 +2,21 @@ package com.xebia.starters.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xebia.starters.domain.Product;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-public class ProductTest {
+class ProductTest {
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private static List<Product> products;
 
-    private List<Product> products;
-
-    @Before
-    public void init() throws IOException {
-        products = Arrays.asList(objectMapper
+    @BeforeAll
+    public static void init() throws IOException {
+        products = Arrays.asList(new ObjectMapper()
                 .readValue(new ClassPathResource("products.json").getFile(), Product[].class));
     }
 
@@ -39,6 +37,6 @@ public class ProductTest {
         final List<Product> products = productsFilter.filterProducts(this.products);
 
         System.out.println("\n===== Resultat =====");
-        products.forEach(p -> System.out.println(p));
+        products.forEach(System.out::println);
     }
 }
