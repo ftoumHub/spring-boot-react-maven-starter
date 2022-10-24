@@ -28,9 +28,7 @@ The products api will be accessible at `http://localhost:3500/api/products`.
 This starter comes bundled with the following features:
 
 1. Multi module Maven project: A multi module project to modularize backend and frontend code separately.
-2. Maven wrapper: So, you don't need to install Maven on your machine.
-3. Checkstyle: Enforce sane coding standard guidelines.
-4. CORS enabled: A global configuration is added to enable CORS so that frontend can work seamlessly with backend during development.
+2. CORS enabled: A global configuration is added to enable CORS so that frontend can work seamlessly with backend during development.
 
 ## Running the backend for development mode
 

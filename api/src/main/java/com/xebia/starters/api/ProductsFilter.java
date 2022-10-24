@@ -2,6 +2,7 @@ package com.xebia.starters.api;
 
 import com.xebia.starters.domain.Product;
 import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +40,7 @@ public class ProductsFilter {
     public List<Product> filterProducts(List<Product> products) {
         System.out.println("filterProducts...");
 
-        if (nonNull(category)) {
+        if (StringUtils.isNotBlank(category)) {
             products = products.stream()
                     .filter(p -> p.getCategory().equalsIgnoreCase(this.category))
                     .collect(toList());
