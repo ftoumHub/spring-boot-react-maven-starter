@@ -2,25 +2,14 @@ package com.xebia.starters.api;
 
 import com.xebia.starters.domain.Product;
 import lombok.ToString;
-import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyList;
 import static java.util.Comparator.comparing;
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
-import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @ToString
 public class ProductsFilter {
@@ -38,9 +27,9 @@ public class ProductsFilter {
     }
 
     public List<Product> filterProducts(List<Product> products) {
-        System.out.println("filterProducts...");
+        System.out.println("filtering Products...");
 
-        if (StringUtils.isNotBlank(category)) {
+        if (isNotBlank(category)) {
             products = products.stream()
                     .filter(p -> p.getCategory().equalsIgnoreCase(this.category))
                     .collect(toList());
@@ -51,7 +40,7 @@ public class ProductsFilter {
         if ("description".equalsIgnoreCase(sort)) products.sort(comparing(Product::getDescription));
         if ("price".equalsIgnoreCase(sort)) products.sort(comparing(Product::getPrice));
 
-        products.forEach(System.out::println);
+        //products.forEach(System.out::println);
 
         if (nonNullAndPositive(page) && nonNullAndPositive(pageSize)) {
             return getPage(products, page, pageSize);

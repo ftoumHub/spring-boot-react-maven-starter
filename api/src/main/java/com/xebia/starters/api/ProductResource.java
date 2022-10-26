@@ -1,11 +1,10 @@
 package com.xebia.starters.api;
 
 import com.xebia.starters.domain.Product;
-import com.xebia.starters.repository.FakeProductsRepository;
+import com.xebia.starters.repository.ProductRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,12 +17,10 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000", exposedHeaders = "x-total-count")
 @RestController
 public class ProductResource {
-
     private static final Logger logger = LoggerFactory.getLogger(ProductResource.class);
+    private ProductRepository fakeProductsRepository;
 
-    private FakeProductsRepository fakeProductsRepository;
-
-    public ProductResource(FakeProductsRepository fakeProductsRepository) {
+    public ProductResource(ProductRepository fakeProductsRepository) {
         this.fakeProductsRepository = fakeProductsRepository;
     }
 
@@ -47,7 +44,8 @@ public class ProductResource {
 
         final List<Product> products = fakeProductsRepository.findAllProducts();
 
-        final List<Product> paginatedProducts = new ProductsFilter(category, page, limit, sort).filterProducts(products);
+        final List<Product> paginatedProducts = new ProductsFilter(category, page, limit, sort)
+                .filterProducts(products);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-total-count", String.valueOf(products.size()));

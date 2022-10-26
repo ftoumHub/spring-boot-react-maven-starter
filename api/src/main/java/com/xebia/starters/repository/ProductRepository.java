@@ -14,7 +14,7 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.range;
 
 @Repository
-public class FakeProductsRepository {
+public class ProductRepository {
 
     private final Faker faker;
     private final Commerce commerceFaker;
@@ -22,12 +22,13 @@ public class FakeProductsRepository {
 
     private final HashMap<String, Product> products;
 
-    public FakeProductsRepository() {
+    public ProductRepository() {
         this.faker = new Faker();
         this.commerceFaker = faker.commerce();
         this.random = new Random();
         this.products = new HashMap<>();
         initProducts();
+        initOrders();
     }
 
     private void initProducts() {
@@ -45,6 +46,10 @@ public class FakeProductsRepository {
                                     .price(Double.parseDouble(commerceFaker.price().replace(',', '.')))
                                     .build());
                 });
+    }
+
+    private void initOrders() {
+
     }
 
     public Product findProduct(String id) {
