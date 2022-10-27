@@ -2,6 +2,8 @@ package com.xebia.starters.api;
 
 import com.xebia.starters.domain.Product;
 import com.xebia.starters.repository.ProductRepository;
+import io.vavr.Tuple2;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -14,48 +16,51 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static com.xebia.starters.utils.LogUtils.logAsJsonObjet;
+
 @CrossOrigin(origins = "http://localhost:3000", exposedHeaders = "x-total-count")
 @RestController
 public class ProductResource {
     private static final Logger logger = LoggerFactory.getLogger(ProductResource.class);
-    private ProductRepository fakeProductsRepository;
+    private final ProductRepository productRepository;
 
-    public ProductResource(ProductRepository fakeProductsRepository) {
-        this.fakeProductsRepository = fakeProductsRepository;
+    public ProductResource(ProductRepository productRepository) {
+        this.productRepository = productRepository;
     }
 
     @GetMapping(path = "/api/products/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable String id) {
-        final Product product = fakeProductsRepository.findProduct(id);
+        final Product product = productRepository.findProduct(id);
         return ResponseEntity.ok(product);
     }
 
     @GetMapping(path = "/api/products")
-    public ResponseEntity<List<Product>> getAllProducts(@RequestParam(name = "category_like", required = false) String category,
-                                         @RequestParam(name = "_page", required = false) Integer page,
-                                         @RequestParam(name = "_limit", required = false) Integer limit,
-                                         @RequestParam(name = "_sort", required = false) String sort) {
-        logger.info("==> getAllProducts");
-        logger.info("filters :");
-        logger.info("category_like : {}", category);
-        logger.info("_page : {}", page);
-        logger.info("_limit : {}", limit);
-        logger.info("_sort : {}", sort);
+    public ResponseEntity<List<Product>> getAllProducts(
+            @RequestParam(name = "category_like", required = false) String category,
+            @RequestParam(name = "_page", required = false) Integer page,
+            @RequestParam(name = "_limit", required = false) Integer limit,
+            @RequestParam(name = "_sort", required = false) String sort
+    ) {
+        logger.info("GET: /api/products");
 
-        final List<Product> products = fakeProductsRepository.findAllProducts();
+        var productsFilter = new ProductsFilter(category, page, limit, sort);
+        logAsJsonObjet(logger, "ProductsFilter : \n{}", new JSONObject(productsFilter));
 
-        final List<Product> paginatedProducts = new ProductsFilter(category, page, limit, sort)
-                .filterProducts(products);
+        final List<Product> products = productRepository.findAllProducts();
+        final Tuple2<Integer, List<Product>> paginatedProducts = productsFilter.filterProducts(products);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("x-total-count", String.valueOf(products.size()));
+        headers.add("x-total-count", String.valueOf(paginatedProducts._1));
 
-        return ResponseEntity.ok().headers(headers).body(paginatedProducts);
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(paginatedProducts._2);
     }
 
     @GetMapping(path = "/api/categories")
     public ResponseEntity<List<String>> getAllCategories() {
-        final List<String> categories = fakeProductsRepository.findAllCategories();
+        logger.info("GET: /api/categories");
+        final List<String> categories = productRepository.findAllCategories();
         return ResponseEntity.ok(categories);
     }
 }

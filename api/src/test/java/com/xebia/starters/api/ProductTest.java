@@ -2,6 +2,7 @@ package com.xebia.starters.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xebia.starters.domain.Product;
+import io.vavr.Tuple2;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
@@ -34,9 +35,9 @@ class ProductTest {
     public void filterProducts() {
         final ProductsFilter productsFilter = new ProductsFilter("chess", 3, 2, "name");
 
-        final List<Product> products = productsFilter.filterProducts(this.products);
+        final Tuple2<Integer, List<Product>> products = productsFilter.filterProducts(this.products);
 
         System.out.println("\n===== Resultat =====");
-        products.forEach(System.out::println);
+        products._2.forEach(System.out::println);
     }
 }

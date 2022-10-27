@@ -1,6 +1,9 @@
 package com.xebia.starters.api;
 
 import com.xebia.starters.domain.Product;
+import io.vavr.Tuple;
+import io.vavr.Tuple2;
+import lombok.Getter;
 import lombok.ToString;
 
 import java.util.List;
@@ -12,6 +15,7 @@ import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @ToString
+@Getter
 public class ProductsFilter {
 
     public final String category;
@@ -26,27 +30,26 @@ public class ProductsFilter {
         this.sort = sort;
     }
 
-    public List<Product> filterProducts(List<Product> products) {
-        System.out.println("filtering Products...");
-
+    public Tuple2<Integer, List<Product>> filterProducts(List<Product> products) {
+        System.out.println("filter products : " + products.size());
+        Tuple2<Integer, List<Product>> productsInCategory = Tuple.of(products.size(), products);
         if (isNotBlank(category)) {
             products = products.stream()
                     .filter(p -> p.getCategory().equalsIgnoreCase(this.category))
                     .collect(toList());
+            productsInCategory = Tuple.of(products.size(), products);
         }
 
-        if ("name".equalsIgnoreCase(sort)) products.sort(comparing(Product::getName));
-        if ("category".equalsIgnoreCase(sort)) products.sort(comparing(Product::getCategory));
-        if ("description".equalsIgnoreCase(sort)) products.sort(comparing(Product::getDescription));
-        if ("price".equalsIgnoreCase(sort)) products.sort(comparing(Product::getPrice));
-
-        //products.forEach(System.out::println);
+        if ("name".equalsIgnoreCase(sort))          products.sort(comparing(Product::getName));
+        if ("category".equalsIgnoreCase(sort))      products.sort(comparing(Product::getCategory));
+        if ("description".equalsIgnoreCase(sort))   products.sort(comparing(Product::getDescription));
+        if ("price".equalsIgnoreCase(sort))         products.sort(comparing(Product::getPrice));
 
         if (nonNullAndPositive(page) && nonNullAndPositive(pageSize)) {
-            return getPage(products, page, pageSize);
+            return Tuple.of(productsInCategory._2.size(), getPage(products, page, pageSize));
         }
 
-        return products;
+        return productsInCategory;
     }
 
     /**

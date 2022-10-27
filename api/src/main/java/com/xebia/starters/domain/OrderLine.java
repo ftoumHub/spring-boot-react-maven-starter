@@ -5,8 +5,8 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode
-@Value
 @ToString
+@Value
 public class OrderLine {
 
     private String product_id;
