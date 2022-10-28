@@ -1,4 +1,4 @@
-type product {
+type Product {
     id: ID!,
     name: String!,
     description: String!,
@@ -6,6 +6,34 @@ type product {
     price: Float!
 }
 
+type ProductSelection { quantity: Int!, product: Product }
+
+type Order {
+    id: ID!,
+    name: String!,
+    email: String!,
+    address: String!,
+    city: String!,
+    zip: String!,
+    country: String!,
+    shipped: Boolean,
+    products: [ProductSelection]
+}
+
+type ProductPage { totalSize: Int!, products(sort: String, page: Int, pageSize: Int): [Product]}
+
+type OrderPage { totalSize: Int, orders(sort: String, page: Int, pageSize: Int): [Order]}
+
 type Query {
     currentTime: String!
+    allProducts: [Product]
+    product(id: ID!): Product
+}
+
+input ProductStore {
+    name: String!, category: String!, description: String!, price: Float!
+}
+
+type Mutation {
+    storeProduct(productStore: ProductStore): Product
 }

@@ -2,10 +2,15 @@ package com.xebia.starters.api;
 
 import com.xebia.starters.domain.Product;
 import com.xebia.starters.repository.ProductRepository;
+import com.xebia.starters.utils.LogUtils;
 import io.vavr.Tuple2;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -57,10 +62,48 @@ public class ProductResource {
                 .body(paginatedProducts._2);
     }
 
+
     @GetMapping(path = "/api/categories")
     public ResponseEntity<List<String>> getAllCategories() {
         logger.info("GET: /api/categories");
         final List<String> categories = productRepository.findAllCategories();
         return ResponseEntity.ok(categories);
+    }
+
+    /**
+     * Requête graphql pour voir la liste :
+     * query {
+     *   allProducts {id name category description price}
+     * }
+     */
+    @SchemaMapping(typeName = "Query",value = "allProducts")
+    public List<Product> findAll() {
+        return productRepository.findAllProducts();
+    }
+
+    /**
+     * query {
+     *   product(id: "313") {id name category description price}
+     * }
+     */
+    @QueryMapping
+    public Product product(@Argument String id) {
+        return productRepository.findProduct(id);
+    }
+
+    @MutationMapping
+    public Product storeProduct(@Argument ProductStore productStore) {
+        LogUtils.logAsJsonObjet(logger, "\n{}", new JSONObject(productStore));
+        return productRepository.saveProduct(toDomain(productStore));
+    }
+
+    private Product toDomain(ProductStore productStore) {
+        return Product.builder()
+                .id(String.valueOf(productRepository.newId()))
+                .name(productStore.getName())
+                .category(productStore.getCategory())
+                .description(productStore.getDescription())
+                .price(productStore.getPrice())
+                .build();
     }
 }
